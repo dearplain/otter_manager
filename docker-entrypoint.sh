@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 echo ManagerAddr: $ManagerAddr
 echo ManagerPort: $ManagerPort
 echo MysqlAddr: $MysqlAddr
 echo MysqlUser: $MysqlUser
 echo MysqlPwd: $MysqlPwd
+echo ZKPort: $ZKPort
+if [ -z "$ZKPort" ];then
+	ZKPort=2181
+fi
+sed -ri 's/(clientPort).*/\1=$ZKPort/' /opt/zookeeper/conf/zoo.cfg
 sed -ri "s/(otter.domainName).*/\1 = $ManagerAddr/" /manager/conf/otter.properties
 sed -ri "s/(otter.port).*/\1 = $ManagerPort/" /manager/conf/otter.properties
 sed -ri "s/(otter.database.driver.url).*/\1 = jdbc:mysql:\/\/$MysqlAddr\/otter/" /manager/conf/otter.properties
