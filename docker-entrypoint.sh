@@ -14,7 +14,7 @@ if [ -z "$MaxMem" ];then
 else
     sed -i s/"-server -Xms32m -Xmx3072m"/"-server -Xms32m -Xmx$MaxMem"/g /manager/bin/startup.sh
 fi
-sed -ri 's/(clientPort).*/\1=$ZKPort/' /opt/zookeeper/conf/zoo.cfg
+sed -ri "s/(clientPort).*/\1=$ZKPort/" /opt/zookeeper/conf/zoo.cfg
 sed -ri "s/(otter.domainName).*/\1 = $ManagerAddr/" /manager/conf/otter.properties
 sed -ri "s/(otter.port).*/\1 = $ManagerPort/" /manager/conf/otter.properties
 sed -ri "s/(otter.database.driver.url).*/\1 = jdbc:mysql:\/\/$MysqlAddr\/otter/" /manager/conf/otter.properties
@@ -25,4 +25,4 @@ sleep 2
 /manager/bin/stop.sh
 /manager/bin/startup.sh
 trap 'echo stop manager; cd /manager/bin; ./stop.sh' TERM
-tail -f /dev/null & wait
+tail -f /manager/logs/manager.log & wait
