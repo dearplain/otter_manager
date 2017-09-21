@@ -14,6 +14,7 @@ RUN mkdir -p /opt/zookeeper \
     && sed -ri 's/(dataDir).*/\1=\/zkdata/' /opt/zookeeper/conf/zoo.cfg \
     && mkdir -p /zkdata
 
+RUN apk add -U tzdata
 ADD docker-entrypoint.sh /
 RUN chmod +x docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
